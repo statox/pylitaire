@@ -9,9 +9,17 @@ class Card:
         
     def __str__(self):
         if self.facedown:
-            return "##"
+            return  "\033[90m" + "## " +  "\033[0m"
         else:
-            return self.value + self.symbol + "-" + self.color
+            if (self.color == "R"):
+                colorString = "\033[31m"
+            else:
+                colorString = ""
+            if (self.value == "10"):
+                offsetString = ""
+            else:
+                offsetString = " "
+            return colorString + self.value + self.symbol + offsetString + "\033[0m"
 
     def __eq__(self, other):
         if isinstance(other, Card):
