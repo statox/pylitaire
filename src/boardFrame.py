@@ -10,8 +10,7 @@ class BoardFrame(Frame):
         self.topFrame     = Frame(self)
         self.bottomFrame  = Frame(self)
         self.topFrame.pack(side="top", fill="x", expand=False)
-        # self.bottomFrame.pack(side="bottom", fill="both", expand=True)
-        self.bottomFrame.pack(side="top", fill="x", expand=True)
+        self.bottomFrame.pack(side="top", fill="both", expand=True)
 
         # Divide the top frame in 2 vertically
         self.topLeft   = Frame(self.topFrame)
@@ -20,16 +19,16 @@ class BoardFrame(Frame):
         self.topRight.pack(side="right", fill="x", expand=True)
 
         # In top left put 2 frames for the stock and the waste
-        self.stockFrame = Frame(self.topLeft)
-        self.wasteFrame = Frame(self.topLeft)
+        self.stockFrame = Frame(self.topLeft, background="#336600")
+        self.wasteFrame = Frame(self.topLeft, background="#336600")
         self.stockFrame.pack(side="left", fill="x", expand=True)
         self.wasteFrame.pack(side="right", fill="x", expand=True)
 
         # In top right put 4 frames for the 4 foundations
-        self.HFrame = Frame(self.topRight, background="yellow")
-        self.CFrame = Frame(self.topRight, background="orange")
-        self.SFrame = Frame(self.topRight, background="green")
-        self.DFrame = Frame(self.topRight, background="grey")
+        self.HFrame = Frame(self.topRight, background="#336600")
+        self.CFrame = Frame(self.topRight, background="#336600")
+        self.SFrame = Frame(self.topRight, background="#336600")
+        self.DFrame = Frame(self.topRight, background="#336600")
         self.HFrame.pack(side="right", fill="both", expand=True)
         self.CFrame.pack(side="right", fill="both", expand=True)
         self.SFrame.pack(side="right", fill="both", expand=True)
@@ -38,7 +37,7 @@ class BoardFrame(Frame):
         # In bottom frame put 7 frames for the tableau piles
         self.tableauFrames = []
         for i in range(0, 7):
-            self.tableauFrames.append(Frame(self.bottomFrame))
+            self.tableauFrames.append(Frame(self.bottomFrame, background="#336600"))
             self.tableauFrames[i].pack(side="left", fill="y", expand=True)
 
         # Load common images
