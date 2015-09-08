@@ -1,10 +1,12 @@
 from random import shuffle
 from card import Card
+from boardFrame import BoardFrame
 
-class Board:
-    def __init__(self):
+class Board():
+    def __init__(self, GUIMaster):
         self.values = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
         self.symbols = ['H', 'S', 'C', 'D']
+        self.boardFrame = BoardFrame(GUIMaster)
 
         # Generate the stock
         self.stock = []
@@ -32,20 +34,26 @@ class Board:
                 card = self.stock.pop()
                 self.PlayingStacks[stack].append(card)
 
-            self.PlayingStacks[stack][-1].facedown = False
+            self.PlayingStacks[stack][-1].setFaceDown(False)
+
+        # Update GUI
+        self.boardFrame.updateGUI(self)
 
     def pickCardFromStock(self):
         # If stock gets empty, recycle the waste
         if (len(self.stock) == 0):
             while (len(self.waste) > 0):
                 self.stock.append(self.waste.pop())
-                self.stock[-1].facedown = True
-            self.stock[-1].facedown = False
+                self.stock[-1].setFaceDown(True)
+            self.stock[-1].setFaceDown(False)
 
         card = self.stock.pop()
         self.waste.append(card)
         if (len(self.waste) > 0):
-            self.waste[-1].facedown = False
+            self.waste[-1].setFaceDown(False)
+
+        # Update GUI
+        self.boardFrame.updateGUI(self)
 
     def moveCardFromFoundation(self, choosenFoundation, choosenDestination):
         # Get the foundation to treat
@@ -114,8 +122,10 @@ class Board:
             else:
                 return -1
 
-            print ("Card        : " + cardValue.__str__()        + "\t" + self.waste[-1].symbol.__str__())
-            print ("Destination : " + len(destination).__str__() + "\t" + choice.__str__())
+            print ("Card        : " + cardValue.__str__()        + "\t" 
+                   + self.waste[-1].symbol.__str__())
+            print ("Destination : " + len(destination).__str__() + "\t" 
+                   + choice.__str__())
             if (cardValue != len(destination) or
                 self.waste[-1].symbol != choice):
                 print("Wrong color or wrong value")
@@ -125,7 +135,7 @@ class Board:
         destination.append(self.waste.pop())
 
     def moveCardFromTableau(self, card, choice):
-        card.facedown = False
+        card.setFaceDown(False)
         cardValue = self.values.index(card.value)
         print("looking for card " + card.__str__())
 
@@ -142,7 +152,8 @@ class Board:
             print ("This card cant be moved")
             return -1
 
-        print("Card found in list : " + pileIndex.__str__() + "[" + cardIndex.__str__() + "/" + len(s).__str__() + "]")
+        print("Card found in list : " + pileIndex.__str__() + "[" 
+              + cardIndex.__str__() + "/" + len(s).__str__() + "]")
         print("Number of card to move " + nbOfCards.__str__())
         
         # Try to move to the tableau
@@ -188,7 +199,7 @@ class Board:
 
         # Reveal the card which was before the moved one(s)
         if (len(s) > 0):
-            s[-1].facedown = False
+            s[-1].setFaceDown(False)
 
         return 0
 

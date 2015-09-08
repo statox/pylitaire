@@ -1,7 +1,7 @@
 from board import Board
 from card import Card
 
-class Game:
+class Game():
 
     def __init__(self):
         self.board = Board()
