@@ -76,16 +76,21 @@ class BoardFrame(Frame):
         print(board.__str__())
 
         # Update stock and waste buttons
-        self.stockButton.configure(command=board.pickCardFromStock)
         resetStockButtonImage = True
         if (len(board.stock) > 0):
-            self.wasteButton.configure(image=board.stock[-1].photoFaceUp)
+            # self.wasteButton.configure(image=board.stock[-1].photoFaceUp)
+            # self.wasteButton.configure(image=board.waste[-1].photoFaceUp)
             if (resetStockButtonImage):
                 self.stockButton.configure(image=self.photoBack)
                 resetStockButtonImage = False
         else:
             self.stockButton.configure(image=self.photoEmpty)
             resetStockButtonImage = True
+
+        if (len(board.waste) == 0):
+            self.wasteButton.configure(image=self.photoEmpty)
+        else:
+            self.wasteButton.configure(image=board.waste[-1].photoFaceUp)
 
         # Update foundations buttons
         if (len(board.H) > 0):
