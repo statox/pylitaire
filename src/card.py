@@ -1,25 +1,20 @@
 from PIL import Image, ImageTk
-from cardButton import CardButton
 
 class Card():
     def __init__(self, symbol, value):
         # Members specifics to the game
-        self.symbol  = symbol
-        self.value   = value
-        self.facedown = True
-        self.color = "R"
+        self.symbol    = symbol
+        self.value     = value
+        self.facedown  = True
+        self.color     = "R"
         if (symbol == "S" or symbol == "C"):
             self.color = "B"
 
-        # GUI member
-        pathToImage = "../img/" + self.symbol + self.value + ".bmp"
-        imageFaceUp = Image.open(pathToImage)
-        print("image size: " + imageFaceUp.size.__str__())
-        print("image width: " + imageFaceUp.size[0].__str__())
-        print("image height: " + imageFaceUp.size[1].__str__())
-
-        self.photoFaceUp = ImageTk.PhotoImage(imageFaceUp)
-        self.photoFaceUpCropped = ImageTk.PhotoImage(imageFaceUp.crop((0, 0, imageFaceUp.size[0], imageFaceUp.size[1]/4)))
+        # GUI members
+        pathToImage              = "../img/" + self.symbol + self.value + ".bmp"
+        imageFaceUp              = Image.open(pathToImage)
+        self.photoFaceUp         = ImageTk.PhotoImage(imageFaceUp)
+        self.photoFaceUpCropped  = ImageTk.PhotoImage(imageFaceUp.crop((0, 0, imageFaceUp.size[0], imageFaceUp.size[1]/4)))
 
     def setFaceDown(self, value):
         self.facedown = value
