@@ -11,7 +11,7 @@ class BoardFrame(Frame):
         self.bottomFrame  = Frame(self)
         self.topFrame.pack(side="top", fill="x", expand=False)
         # self.bottomFrame.pack(side="bottom", fill="both", expand=True)
-        self.bottomFrame.pack(side="bottom", fill="x", expand=True)
+        self.bottomFrame.pack(side="top", fill="x", expand=True)
 
         # Divide the top frame in 2 vertically
         self.topLeft   = Frame(self.topFrame)
@@ -35,13 +35,21 @@ class BoardFrame(Frame):
         self.SFrame.pack(side="right", fill="both", expand=True)
         self.DFrame.pack(side="right", fill="both", expand=True)
 
+        # In bottom frame put 7 frames for the tableau piles
+        self.tableauFrames = []
+        for i in range(0, 7):
+            self.tableauFrames.append(Frame(self.bottomFrame))
+            self.tableauFrames[i].pack(side="left", fill="y", expand=True)
+
         # Load common images
-        self.photoBack    = ImageTk.PhotoImage(Image.open("../img/back.bmp"))
-        self.photoEmpty   = ImageTk.PhotoImage(Image.open("../img/empty.bmp"))
-        self.photoHEmpty  = ImageTk.PhotoImage(Image.open("../img/Hempty.bmp"))
-        self.photoCEmpty  = ImageTk.PhotoImage(Image.open("../img/Cempty.bmp"))
-        self.photoSEmpty  = ImageTk.PhotoImage(Image.open("../img/Sempty.bmp"))
-        self.photoDEmpty  = ImageTk.PhotoImage(Image.open("../img/Dempty.bmp"))
+        imageBack              = Image.open("../img/back.bmp")
+        self.photoBack         = ImageTk.PhotoImage(imageBack)
+        self.photoBackCropped  = ImageTk.PhotoImage(imageBack.crop((0, 0, imageBack.size[0], imageBack.size[1]/4)))
+        self.photoEmpty        = ImageTk.PhotoImage(Image.open("../img/empty.bmp"))
+        self.photoHEmpty       = ImageTk.PhotoImage(Image.open("../img/Hempty.bmp"))
+        self.photoCEmpty       = ImageTk.PhotoImage(Image.open("../img/Cempty.bmp"))
+        self.photoSEmpty       = ImageTk.PhotoImage(Image.open("../img/Sempty.bmp"))
+        self.photoDEmpty       = ImageTk.PhotoImage(Image.open("../img/Dempty.bmp"))
 
         # Put initial waste button
         self.wasteButton = Button(self.wasteFrame, image=self.photoEmpty)
@@ -89,3 +97,25 @@ class BoardFrame(Frame):
             self.SButton.configure(image=board.S[-1].photoFaceUp)
         if (len(board.D) > 0):
             self.DButton.configure(image=board.D[-1].photoFaceUp)
+
+        # Update tableau piles
+        frame = -1
+        for pile in board.PlayingStacks:
+            frame += 1
+            r = -1
+            for card in pile:
+                r += 1
+
+                if (card != pile[-1]):
+                    if (card.facedown):
+                        image=self.photoBackCropped
+                    else:
+                        image=card.photoFaceUpCropped
+                else:
+                    if (card.facedown):
+                        image=self.photoBack
+                    else:
+                        image=card.photoFaceUp
+
+
+                Button(self.tableauFrames[frame], image=image).grid(row=r, column=0)

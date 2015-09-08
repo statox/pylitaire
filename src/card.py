@@ -14,11 +14,15 @@ class Card():
         # GUI member
         pathToImage = "../img/" + self.symbol + self.value + ".bmp"
         imageFaceUp = Image.open(pathToImage)
+        print("image size: " + imageFaceUp.size.__str__())
+        print("image width: " + imageFaceUp.size[0].__str__())
+        print("image height: " + imageFaceUp.size[1].__str__())
+
         self.photoFaceUp = ImageTk.PhotoImage(imageFaceUp)
+        self.photoFaceUpCropped = ImageTk.PhotoImage(imageFaceUp.crop((0, 0, imageFaceUp.size[0], imageFaceUp.size[1]/4)))
 
     def setFaceDown(self, value):
         self.facedown = value
-        # self.cardButton.setFaceDown(value)
         
     def __str__(self):
         if self.facedown:
