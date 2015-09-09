@@ -19,25 +19,25 @@ class BoardFrame(Frame):
         self.topRight.pack(side="right", fill="x", expand=True)
 
         # In top left put 2 frames for the stock and the waste
-        self.stockFrame = Frame(self.topLeft, background="#336600")
-        self.wasteFrame = Frame(self.topLeft, background="#336600")
+        self.stockFrame = Frame(self.topLeft)
+        self.wasteFrame = Frame(self.topLeft)
         self.stockFrame.pack(side="left", fill="x", expand=True)
         self.wasteFrame.pack(side="right", fill="x", expand=True)
 
         # In top right put 4 frames for the 4 foundations
-        self.HFrame = Frame(self.topRight, background="#336600")
-        self.CFrame = Frame(self.topRight, background="#336600")
-        self.SFrame = Frame(self.topRight, background="#336600")
-        self.DFrame = Frame(self.topRight, background="#336600")
+        self.HFrame = Frame(self.topRight)
+        self.CFrame = Frame(self.topRight)
+        self.SFrame = Frame(self.topRight)
+        self.DFrame = Frame(self.topRight)
         self.HFrame.pack(side="right", fill="both", expand=True)
         self.CFrame.pack(side="right", fill="both", expand=True)
-        self.SFrame.pack(side="right", fill="both", expand=True)
         self.DFrame.pack(side="right", fill="both", expand=True)
+        self.SFrame.pack(side="right", fill="both", expand=True)
 
         # In bottom frame put 7 frames for the tableau piles
         self.tableauFrames = []
         for i in range(0, 7):
-            self.tableauFrames.append(Frame(self.bottomFrame, background="#336600"))
+            self.tableauFrames.append(Frame(self.bottomFrame))
             self.tableauFrames[i].pack(side="left", fill="y", expand=True)
 
         # Load common images
