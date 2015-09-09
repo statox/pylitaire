@@ -93,6 +93,7 @@ class Board():
             return -1
 
         destination.append(foundation.pop())
+        self.boardFrame.updateGUI(self)
         return 0
 
     def moveCardFromWaste(self, choice):
@@ -133,6 +134,7 @@ class Board():
 
         # If all conditions are ok move the card
         destination.append(self.waste.pop())
+        self.boardFrame.updateGUI(self)
 
     def moveCardFromTableau(self, card, choice):
         card.setFaceDown(False)

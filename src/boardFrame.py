@@ -103,13 +103,16 @@ class BoardFrame(Frame):
             self.DButton.configure(image=board.D[-1].photoFaceUp)
 
         # Update tableau piles
+        for f in self.tableauFrames:
+            if (len(f.winfo_children()) > 0):
+                f.winfo_children()[-1].destroy()
+
         frame = -1
         for pile in board.PlayingStacks:
             frame += 1
             r = -1
             for card in pile:
                 r += 1
-
                 if (card != pile[-1]):
                     if (card.facedown):
                         image=self.photoBackCropped
@@ -120,6 +123,5 @@ class BoardFrame(Frame):
                         image=self.photoBack
                     else:
                         image=card.photoFaceUp
-
 
                 Button(self.tableauFrames[frame], image=image).grid(row=r, column=0)
