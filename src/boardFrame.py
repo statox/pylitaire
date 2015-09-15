@@ -115,7 +115,8 @@ class BoardFrame(Frame):
         # Remove old buttons in each frame
         for f in self.tableauFrames:
             if (len(f.winfo_children()) > 0):
-                f.winfo_children()[-1].destroy()
+                for child in f.winfo_children():
+                    child.destroy()
 
         frame = -1
         for pile in board.PlayingStacks:
