@@ -75,7 +75,8 @@ class BoardFrame(Frame):
         self.DButton.pack(side="top", fill="both", expand=False)
 
 
-    # To be called by the board class when graphics are updated
+    # To be called by the controller when the board 
+    # publish the refreshGUI event
     def updateGUI(self, board):
         print(board.__str__())
 
