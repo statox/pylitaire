@@ -4,6 +4,7 @@ from pubsub import pub
 
 class Board():
     def __init__(self):
+        # Values and symbols of the card which will be created
         self.values      = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
         self.symbols     = ['H', 'S', 'C', 'D']
 
@@ -23,10 +24,10 @@ class Board():
         self.S = []
         self.D = []
 
-        # generate empyt waste
+        # generate empty waste
         self.waste = []
 
-        # generate piles used to play
+        # generate tableau piles used to play
         self.PlayingStacks = [[], [], [], [], [], [], []]
         for stack in range (0, 7):
             for index in range (-1, stack):
@@ -36,7 +37,6 @@ class Board():
             self.PlayingStacks[stack][-1].setFaceDown(False)
 
         # Update GUI
-        # self.boardFrame.updateGUI(self)
         pub.sendMessage('refreshGUITopic')
 
     def pickCardFromStock(self):
@@ -53,7 +53,6 @@ class Board():
             self.waste[-1].setFaceDown(False)
 
         # Update GUI
-        # self.boardFrame.updateGUI(self)
         pub.sendMessage('refreshGUITopic')
 
     def moveCardFromFoundation(self, choosenFoundation, choosenDestination):
@@ -94,7 +93,8 @@ class Board():
             return -1
 
         destination.append(foundation.pop())
-        # self.boardFrame.updateGUI(self)
+
+        # Update GUI
         pub.sendMessage('refreshGUITopic')
         return 0
 
@@ -136,7 +136,8 @@ class Board():
 
         # If all conditions are ok move the card
         destination.append(self.waste.pop())
-        # self.boardFrame.updateGUI(self)
+
+        # Update GUI
         pub.sendMessage('refreshGUITopic')
 
     def moveCardFromTableau(self, card, choice):

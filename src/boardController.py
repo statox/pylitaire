@@ -62,7 +62,7 @@ class BoardController:
             button.configure(command=command)
 
     def moveCardFromTableau(self, card):
-        print("Moving " + card.__str__() + " from tableau")
+        # bind card from the foundations to moveFromTableau
         commandH = partial(self.board.moveCardFromTableau, card, "H")
         commandC = partial(self.board.moveCardFromTableau, card, "C")
         commandS = partial(self.board.moveCardFromTableau, card, "S")

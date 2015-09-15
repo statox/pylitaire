@@ -43,8 +43,6 @@ class BoardFrame(Frame):
         # Dictionary which will links cards in the tableau
         # to buttons which represent them
         self.cardButtons = {}
-        
-
 
         # Load common images
         imageBack              = Image.open("../img/back.bmp")
