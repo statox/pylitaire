@@ -1,15 +1,11 @@
 from random import shuffle
 from card import Card
-from boardFrame import BoardFrame
 from pubsub import pub
 
 class Board():
-    # def __init__(self, GUIMaster):
-    def __init__(self, boardFrame):
+    def __init__(self):
         self.values      = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
         self.symbols     = ['H', 'S', 'C', 'D']
-        # self.boardFrame  = BoardFrame(GUIMaster)
-        self.boardFrame  = boardFrame
 
         # Generate the stock
         self.stock = []

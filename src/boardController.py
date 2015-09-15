@@ -11,18 +11,20 @@ class BoardController:
         self.root.geometry("%dx%d+0+0" % (w, h))
 
         self.boardFrame = BoardFrame(self.root)
-        self.board = Board(self.boardFrame)
+        self.board = Board()
         self.board.boardFrame = self.boardFrame
         self.boardFrame.pack(side=TOP, fill=BOTH, expand=True)
         self.refreshGui()
 
         # Define commands linked to the view buttons
         self.defineCardsActions()
+        # Subscribes to event from the board to know when to refresh the GUI 
         pub.subscribe(self.listener1, 'refreshGUITopic')
 
     # Listener for GUI refresh
+    # When the GUI is refreshed we also need to re-bind the cards buttons
+    # to the right actions
     def listener1(self):
-        print 'Function listener1 received:'
         self.refreshGui()
         self.defineCardsActions()
 
