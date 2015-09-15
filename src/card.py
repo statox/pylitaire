@@ -38,3 +38,6 @@ class Card():
             return (self.symbol == other.symbol and
                    self.value == other.value)
         return NotImplemented
+
+    def __hash__(self):
+        return hash(self.symbol + self.value)

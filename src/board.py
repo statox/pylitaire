@@ -1,12 +1,15 @@
 from random import shuffle
 from card import Card
 from boardFrame import BoardFrame
+from pubsub import pub
 
 class Board():
-    def __init__(self, GUIMaster):
-        self.values = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
-        self.symbols = ['H', 'S', 'C', 'D']
-        self.boardFrame = BoardFrame(GUIMaster)
+    # def __init__(self, GUIMaster):
+    def __init__(self, boardFrame):
+        self.values      = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
+        self.symbols     = ['H', 'S', 'C', 'D']
+        # self.boardFrame  = BoardFrame(GUIMaster)
+        self.boardFrame  = boardFrame
 
         # Generate the stock
         self.stock = []
@@ -37,7 +40,8 @@ class Board():
             self.PlayingStacks[stack][-1].setFaceDown(False)
 
         # Update GUI
-        self.boardFrame.updateGUI(self)
+        # self.boardFrame.updateGUI(self)
+        pub.sendMessage('refreshGUITopic')
 
     def pickCardFromStock(self):
         # If stock gets empty, recycle the waste
@@ -53,7 +57,8 @@ class Board():
             self.waste[-1].setFaceDown(False)
 
         # Update GUI
-        self.boardFrame.updateGUI(self)
+        # self.boardFrame.updateGUI(self)
+        pub.sendMessage('refreshGUITopic')
 
     def moveCardFromFoundation(self, choosenFoundation, choosenDestination):
         # Get the foundation to treat
@@ -93,7 +98,8 @@ class Board():
             return -1
 
         destination.append(foundation.pop())
-        self.boardFrame.updateGUI(self)
+        # self.boardFrame.updateGUI(self)
+        pub.sendMessage('refreshGUITopic')
         return 0
 
     def moveCardFromWaste(self, choice):
@@ -134,7 +140,8 @@ class Board():
 
         # If all conditions are ok move the card
         destination.append(self.waste.pop())
-        self.boardFrame.updateGUI(self)
+        # self.boardFrame.updateGUI(self)
+        pub.sendMessage('refreshGUITopic')
 
     def moveCardFromTableau(self, card, choice):
         card.setFaceDown(False)
@@ -203,6 +210,8 @@ class Board():
         if (len(s) > 0):
             s[-1].setFaceDown(False)
 
+        # self.boardFrame.updateGUI(self)
+        pub.sendMessage('refreshGUITopic')
         return 0
 
 

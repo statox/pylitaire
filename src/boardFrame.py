@@ -40,6 +40,12 @@ class BoardFrame(Frame):
             self.tableauFrames.append(Frame(self.bottomFrame))
             self.tableauFrames[i].pack(side="left", fill="y", expand=True)
 
+        # Dictionary which will links cards in the tableau
+        # to buttons which represent them
+        self.cardButtons = {}
+        
+
+
         # Load common images
         imageBack              = Image.open("../img/back.bmp")
         self.photoBack         = ImageTk.PhotoImage(imageBack)
@@ -78,8 +84,6 @@ class BoardFrame(Frame):
         # Update stock and waste buttons
         resetStockButtonImage = True
         if (len(board.stock) > 0):
-            # self.wasteButton.configure(image=board.stock[-1].photoFaceUp)
-            # self.wasteButton.configure(image=board.waste[-1].photoFaceUp)
             if (resetStockButtonImage):
                 self.stockButton.configure(image=self.photoBack)
                 resetStockButtonImage = False
@@ -124,4 +128,17 @@ class BoardFrame(Frame):
                     else:
                         image=card.photoFaceUp
 
-                Button(self.tableauFrames[frame], image=image).grid(row=r, column=0)
+                newButton = Button(self.tableauFrames[frame], image=image)
+                newButton.grid(row=r, column=0)
+                if (not card.facedown):
+                    self.cardButtons[card] = newButton
+
+        # remove old entries from dictionary
+        for k in self.cardButtons.keys():
+            isInTableau = False
+            for stack in board.PlayingStacks:
+                if k in stack:
+                    isInTableau = True
+                    break
+            if (not isInTableau):
+                self.cardButtons.pop(k, None)
