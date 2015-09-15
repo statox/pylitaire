@@ -12,7 +12,6 @@ class BoardController:
 
         self.boardFrame = BoardFrame(self.root)
         self.board = Board()
-        self.board.boardFrame = self.boardFrame
         self.boardFrame.pack(side=TOP, fill=BOTH, expand=True)
         self.refreshGui()
 
