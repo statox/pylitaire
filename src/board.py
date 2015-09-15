@@ -147,6 +147,7 @@ class Board():
         card.setFaceDown(False)
         cardValue = self.values.index(card.value)
         print("looking for card " + card.__str__())
+        print("To move to " + choice.__str__())
 
         # Get the list of cards to move (the list can contain only one card)
         pileIndex = -1
@@ -159,6 +160,7 @@ class Board():
         # Fail if we select a card which isnt in the tableau
         if (pileIndex == -1):
             print ("This card cant be moved")
+            pub.sendMessage('refreshGUITopic')
             return -1
 
         print("Card found in list : " + pileIndex.__str__() + "[" 
@@ -172,11 +174,13 @@ class Board():
             if (len(destination) == 0):
                 if (card.value != "K"):
                     print("You can only move a king here")
+                    pub.sendMessage('refreshGUITopic')
                     return -1
             # is the pile isnt empty check the values and colors
             elif (card.color == destination[-1].color or 
                   cardValue != self.values.index(destination[-1].value)-1):
                 print("Wrong color or wrong value")
+                pub.sendMessage('refreshGUITopic')
                 return -1
         # Try to move in to the foundations
         else:
@@ -189,16 +193,19 @@ class Board():
             elif (choice == "C"):
                 destination = self.C
             else:
+                pub.sendMessage('refreshGUITopic')
                 return -1
 
             # Fail if we try to put several cards at the time in a foundation
             if (nbOfCards != 1):
                 print("You can move more than one card here")
+                pub.sendMessage('refreshGUITopic')
                 return -1
             # Checks on the values and colors
             if (cardValue != len(destination) or
                 card.symbol != choice):
                 print("Wrong color or wrong value")
+                pub.sendMessage('refreshGUITopic')
                 return -1
 
         # Actually move the cards
@@ -210,7 +217,6 @@ class Board():
         if (len(s) > 0):
             s[-1].setFaceDown(False)
 
-        # self.boardFrame.updateGUI(self)
         pub.sendMessage('refreshGUITopic')
         return 0
 

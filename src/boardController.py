@@ -48,9 +48,10 @@ class BoardController:
 
         frames = self.boardFrame.tableauFrames
         for index in range (0, 7):
-            child = frames[index].winfo_children()[-1]
-            command = partial(self.board.moveCardFromWaste, (index +1).__str__())
-            child.configure(command=command)
+            if len(frames[index].winfo_children()) > 0:
+                child = frames[index].winfo_children()[-1]
+                command = partial(self.board.moveCardFromWaste, (index +1).__str__())
+                child.configure(command=command)
 
     def defineTableauButtonActions(self):
         for key in self.boardFrame.cardButtons.keys():
@@ -70,7 +71,15 @@ class BoardController:
         self.boardFrame.SButton.configure(command=commandS)
         self.boardFrame.DButton.configure(command=commandD)
 
-        # frames = self.boardFrame.tableauFrames
-        # for button in self.boardFrame.cardButtons.values():
-            # command = partial(self.board.moveCardFromWaste, (index +1).__str__())
-            # child.configure(command=command)
+        # bind cards of the tableau to moveFromTableau
+        for key in self.boardFrame.cardButtons.keys():
+            # find the pile in which the card is
+            pileIndex = -1
+            for s in self.board.PlayingStacks:
+                if (key in s):
+                    pileIndex = self.board.PlayingStacks.index(s)
+                    break
+
+            button  = self.boardFrame.cardButtons[key]
+            command = partial(self.board.moveCardFromTableau, card, (pileIndex + 1).__str__())
+            button.configure(command=command)
