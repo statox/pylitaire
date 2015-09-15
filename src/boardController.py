@@ -84,3 +84,13 @@ class BoardController:
             button  = self.boardFrame.cardButtons[key]
             command = partial(self.board.moveCardFromTableau, card, (pileIndex + 1).__str__())
             button.configure(command=command)
+
+        # if the tableau contains empty pile, configure the buttons
+        # which represent the empty piles
+        buttons = self.boardFrame.tableauFirstCardButtons
+        print("Buttons representing empty pile: ")
+        for key in buttons.keys():
+            print (key.__str__())
+            command = partial(self.board.moveCardFromTableau, card, (key + 1).__str__())
+            buttons[key].configure(command=command)
+            

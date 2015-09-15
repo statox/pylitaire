@@ -44,6 +44,10 @@ class BoardFrame(Frame):
         # to buttons which represent them
         self.cardButtons = {}
 
+        # When a tableau pile is empty, a corresponding button will be stored
+        # in this dictionnary to allow the user to put a card on an empty pile
+        self.tableauFirstCardButtons = {}
+
         # Load common images
         imageBack              = Image.open("../img/back.bmp")
         self.photoBack         = ImageTk.PhotoImage(imageBack)
@@ -73,6 +77,7 @@ class BoardFrame(Frame):
         self.CButton.pack(side="top", fill="both", expand=False)
         self.SButton.pack(side="top", fill="both", expand=False)
         self.DButton.pack(side="top", fill="both", expand=False)
+
 
 
     # To be called by the controller when the board 
@@ -106,6 +111,8 @@ class BoardFrame(Frame):
             self.DButton.configure(image=board.D[-1].photoFaceUp)
 
         # Update tableau piles
+        
+        # Remove old buttons in each frame
         for f in self.tableauFrames:
             if (len(f.winfo_children()) > 0):
                 f.winfo_children()[-1].destroy()
@@ -114,6 +121,18 @@ class BoardFrame(Frame):
         for pile in board.PlayingStacks:
             frame += 1
             r = -1
+
+            # if a pile is empty, create a button to represent it and add 
+            # the button to the dictionary.
+            # If the pile is not empty anymore destroy the button.
+            if (len(pile) == 0):
+                newButton = Button(self.tableauFrames[frame], image=self.photoEmpty)
+                newButton.grid(row=0, column=0)
+                self.tableauFirstCardButtons[frame] = newButton
+            elif frame in self.tableauFirstCardButtons:
+                self.tableauFirstCardButtons[frame].destroy()
+                del self.tableauFirstCardButtons[frame]
+
             for card in pile:
                 r += 1
                 if (card != pile[-1]):
