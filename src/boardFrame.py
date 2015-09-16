@@ -103,12 +103,20 @@ class BoardFrame(Frame):
         # Update foundations buttons
         if (len(board.H) > 0):
             self.HButton.configure(image=board.H[-1].photoFaceUp)
+        else:
+            self.HButton.configure(image=self.photoHEmpty)
         if (len(board.C) > 0):
             self.CButton.configure(image=board.C[-1].photoFaceUp)
+        else:
+            self.CButton.configure(image=self.photoCEmpty)
         if (len(board.S) > 0):
             self.SButton.configure(image=board.S[-1].photoFaceUp)
+        else:
+            self.SButton.configure(image=self.photoSEmpty)
         if (len(board.D) > 0):
             self.DButton.configure(image=board.D[-1].photoFaceUp)
+        else:
+            self.DButton.configure(image=self.photoDEmpty)
 
         # Update tableau piles
         

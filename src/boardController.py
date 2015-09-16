@@ -37,6 +37,7 @@ class BoardController:
         self.boardFrame.stockButton.configure(command=self.pickCardFromStock)
         self.boardFrame.wasteButton.configure(command=self.moveCardFromWaste)
         self.defineTableauButtonActions()
+        self.defineFoundationButtonActions()
 
     def pickCardFromStock(self):
         self.board.pickCardFromStock()
@@ -88,9 +89,25 @@ class BoardController:
         # if the tableau contains empty pile, configure the buttons
         # which represent the empty piles
         buttons = self.boardFrame.tableauFirstCardButtons
-        print("Buttons representing empty pile: ")
         for key in buttons.keys():
-            print (key.__str__())
             command = partial(self.board.moveCardFromTableau, card, (key + 1).__str__())
             buttons[key].configure(command=command)
             
+    def defineFoundationButtonActions(self):
+        commandH = partial(self.moveCardFromfoundation, "H")
+        commandC = partial(self.moveCardFromfoundation, "C")
+        commandS = partial(self.moveCardFromfoundation, "S")
+        commandD = partial(self.moveCardFromfoundation, "D")
+        self.boardFrame.HButton.configure(command=commandH)
+        self.boardFrame.CButton.configure(command=commandC)
+        self.boardFrame.SButton.configure(command=commandS)
+        self.boardFrame.DButton.configure(command=commandD)
+        
+    def moveCardFromfoundation(self, choosenFoundation):
+        # Define actions for last cards in each pile of the tableau
+        frames = self.boardFrame.tableauFrames
+        for index in range (0, 7):
+            if len(frames[index].winfo_children()) > 0:
+                child = frames[index].winfo_children()[-1]
+                command = partial(self.board.moveCardFromFoundation, choosenFoundation, (index +1).__str__())
+                child.configure(command=command)
