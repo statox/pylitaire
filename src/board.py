@@ -70,7 +70,7 @@ class Board():
 
         # check that there is a card to move
         if (len(foundation) < 1):
-            print ("No card to move")
+            # print ("No card to move")
             return -1
         else:
             card = foundation[-1]
@@ -82,14 +82,14 @@ class Board():
             destination = self.PlayingStacks[int(choosenDestination) - 1]
             if (len(destination) == 0):
                 if (card.value != "K"):
-                    print ("You can only move a king here")
+                    # print ("You can only move a king here")
                     return -1
             elif (card.color == destination[-1].color or 
                   cardValue != self.values.index(destination[-1].value)-1):
-                print("Wrong color or wrong value")
+                # print("Wrong color or wrong value")
                 return -1
         else:
-            print("Incorrect choice of pile")
+            # print("Incorrect choice of pile")
             return -1
 
         destination.append(foundation.pop())
@@ -106,11 +106,11 @@ class Board():
             destination = self.PlayingStacks[int(choice) - 1]
             if (len(destination) == 0):
                 if (self.waste[-1].value != "K"):
-                    print ("You can only move a king here")
+                    # print ("You can only move a king here")
                     return -1
             elif (self.waste[-1].color == destination[-1].color or 
                   cardValue != self.values.index(destination[-1].value)-1):
-                print("Wrong color or wrong value")
+                # print("Wrong color or wrong value")
                 return -1
         # If we try to put the card on the foundations
         else:
@@ -125,13 +125,9 @@ class Board():
             else:
                 return -1
 
-            print ("Card        : " + cardValue.__str__()        + "\t" 
-                   + self.waste[-1].symbol.__str__())
-            print ("Destination : " + len(destination).__str__() + "\t" 
-                   + choice.__str__())
             if (cardValue != len(destination) or
                 self.waste[-1].symbol != choice):
-                print("Wrong color or wrong value")
+                # print("Wrong color or wrong value")
                 return -1
 
         # If all conditions are ok move the card
@@ -143,8 +139,6 @@ class Board():
     def moveCardFromTableau(self, card, choice):
         card.setFaceDown(False)
         cardValue = self.values.index(card.value)
-        print("looking for card " + card.__str__())
-        print("To move to " + choice.__str__())
 
         # Get the list of cards to move (the list can contain only one card)
         pileIndex = -1
@@ -156,13 +150,9 @@ class Board():
                 break
         # Fail if we select a card which isnt in the tableau
         if (pileIndex == -1):
-            print ("This card cant be moved")
+            # print ("This card cant be moved")
             pub.sendMessage('refreshGUITopic')
             return -1
-
-        print("Card found in list : " + pileIndex.__str__() + "[" 
-              + cardIndex.__str__() + "/" + len(s).__str__() + "]")
-        print("Number of card to move " + nbOfCards.__str__())
         
         # Try to move to the tableau
         if (choice.isdigit() and int(choice) >= 1 and int(choice) <= 7):
@@ -170,13 +160,13 @@ class Board():
             # Move only king if the pile is empty
             if (len(destination) == 0):
                 if (card.value != "K"):
-                    print("You can only move a king here")
+                    # print("You can only move a king here")
                     pub.sendMessage('refreshGUITopic')
                     return -1
             # is the pile isnt empty check the values and colors
             elif (card.color == destination[-1].color or 
                   cardValue != self.values.index(destination[-1].value)-1):
-                print("Wrong color or wrong value")
+                # print("Wrong color or wrong value")
                 pub.sendMessage('refreshGUITopic')
                 return -1
         # Try to move in to the foundations
@@ -195,19 +185,18 @@ class Board():
 
             # Fail if we try to put several cards at the time in a foundation
             if (nbOfCards != 1):
-                print("You can move more than one card here")
+                # print("You can move more than one card here")
                 pub.sendMessage('refreshGUITopic')
                 return -1
             # Checks on the values and colors
             if (cardValue != len(destination) or
                 card.symbol != choice):
-                print("Wrong color or wrong value")
+                # print("Wrong color or wrong value")
                 pub.sendMessage('refreshGUITopic')
                 return -1
 
         # Actually move the cards
         for c in range(cardIndex, len(s)):
-            print("pop index " + c.__str__())
             destination.append(s.pop(cardIndex))
 
         # Reveal the card which was before the moved one(s)
