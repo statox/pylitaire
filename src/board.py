@@ -213,23 +213,24 @@ class Board():
     # "W": If the card is the last one in the waste
     # 0: otherwise
     def getCardPosition(self, card):
-        if ( len(self.waste) and self.waste[-1] == card ):
-            return "W"
-        elif ( len(self.H)!=0 and self.H[-1] == card ):
-            return "H"
-        elif ( len(self.S)!=0 and self.S[-1] == card ):
-            return "S"
-        elif ( len(self.C)!=0 and self.C[-1] == card ):
-            return "C"
-        elif ( len(self.D)!=0 and self.D[-1] == card ):
-            return "D"
-        else:
-            index = -1
-            for pile in self.PlayingStacks:
-                index += 1
-                for c in pile:
-                    if (c == card and not c.facedown):
-                        return index
+        if ( card is not None ):
+            if ( len(self.waste) and self.waste[-1] == card ):
+                return "W"
+            elif ( len(self.H)!=0 and self.H[-1] == card ):
+                return "H"
+            elif ( len(self.S)!=0 and self.S[-1] == card ):
+                return "S"
+            elif ( len(self.C)!=0 and self.C[-1] == card ):
+                return "C"
+            elif ( len(self.D)!=0 and self.D[-1] == card ):
+                return "D"
+            else:
+                index = -1
+                for pile in self.PlayingStacks:
+                    index += 1
+                    for c in pile:
+                        if (c == card and not c.facedown):
+                            return index
         return 0
 
     def __str__(self):
