@@ -43,16 +43,30 @@ class BoardController:
         self.board.pickCardFromStock()
 
     def moveCardFromWaste(self):
-        self.boardFrame.HButton.configure(command=lambda: self.board.moveCardFromWaste("H"))
-        self.boardFrame.CButton.configure(command=lambda: self.board.moveCardFromWaste("C"))
-        self.boardFrame.SButton.configure(command=lambda: self.board.moveCardFromWaste("S"))
-        self.boardFrame.DButton.configure(command=lambda: self.board.moveCardFromWaste("D"))
+        if (len(self.board.H) > 0):
+            self.boardFrame.HButton.configure(command=lambda: self.board.moveCardFromWaste(self.board.H[-1]))
+        else:
+            self.boardFrame.HButton.configure(command=lambda: self.board.moveCardFromWaste("H"))
+        if (len(self.board.C) > 0):
+            self.boardFrame.CButton.configure(command=lambda: self.board.moveCardFromWaste(self.board.C[-1]))
+        else:
+            self.boardFrame.CButton.configure(command=lambda: self.board.moveCardFromWaste("C"))
+        if (len(self.board.S) > 0):
+            self.boardFrame.SButton.configure(command=lambda: self.board.moveCardFromWaste(self.board.S[-1]))
+        else:
+            self.boardFrame.SButton.configure(command=lambda: self.board.moveCardFromWaste("S"))
+        if (len(self.board.D) > 0):
+            self.boardFrame.DButton.configure(command=lambda: self.board.moveCardFromWaste(self.board.D[-1]))
+        else:
+            self.boardFrame.DButton.configure(command=lambda: self.board.moveCardFromWaste("D"))
 
+        # Define actions for last cards in each pile of the tableau
         frames = self.boardFrame.tableauFrames
         for index in range (0, 7):
             if len(frames[index].winfo_children()) > 0:
                 child = frames[index].winfo_children()[-1]
-                command = partial(self.board.moveCardFromWaste, (index +1).__str__())
+                card = self.board.PlayingStacks[index][-1]
+                command = partial(self.board.moveCardFromWaste, card)
                 child.configure(command=command)
 
     def defineTableauButtonActions(self):

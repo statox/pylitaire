@@ -99,35 +99,37 @@ class Board():
         pub.sendMessage('refreshGUITopic')
         return 0
 
-    def moveCardFromWaste(self, choice):
-        cardValue = self.values.index(self.waste[-1].value)
+    def moveCardFromWaste(self, destinationCard):
+        wasteCardValue = self.values.index(self.waste[-1].value)
+        choosenDestination = self.getCardPosition(destinationCard)
+
         # If we try to put the card on the tableau check the color isnt the same
         # and the values are following
-        if (choice.isdigit() and int(choice) >= 1 and int(choice) <= 7):
-            destination = self.PlayingStacks[int(choice) - 1]
+        if (choosenDestination >= 0 and choosenDestination <= 6):
+            destination = self.PlayingStacks[choosenDestination]
             if (len(destination) == 0):
                 if (self.waste[-1].value != "K"):
                     # print ("You can only move a king here")
                     return -1
             elif (self.waste[-1].color == destination[-1].color or 
-                  cardValue != self.values.index(destination[-1].value)-1):
+                  wasteCardValue != self.values.index(destination[-1].value)-1):
                 # print("Wrong color or wrong value")
                 return -1
         # If we try to put the card on the foundations
         else:
-            if (choice == "H"):
+            if (choosenDestination == "H"):
                 destination = self.H
-            elif (choice == "S"):
+            elif (choosenDestination == "S"):
                 destination = self.S
-            elif (choice == "D"):
+            elif (choosenDestination == "D"):
                 destination = self.D
-            elif (choice == "C"):
+            elif (choosenDestination == "C"):
                 destination = self.C
             else:
                 return -1
 
-            if (cardValue != len(destination) or
-                self.waste[-1].symbol != choice):
+            if (wasteCardValue != len(destination) or
+                self.waste[-1].symbol != choosenDestination):
                 # print("Wrong color or wrong value")
                 return -1
 
