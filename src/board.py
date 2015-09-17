@@ -55,7 +55,9 @@ class Board():
         # Update GUI
         pub.sendMessage('refreshGUITopic')
 
-    def moveCardFromFoundation(self, choosenFoundation, choosenDestination):
+    def moveCardFromFoundation(self, choosenFoundation, destinationCard):
+        choosenDestination = self.getCardPosition(destinationCard)
+
         # Get the foundation to treat
         if (choosenFoundation == "H"):
             foundation = self.H
@@ -77,9 +79,8 @@ class Board():
             cardValue = self.values.index(card.value) 
 
         # check if we can move the card
-        if (choosenDestination.isdigit() and 
-            int(choosenDestination) >= 1 and int(choosenDestination) <= 7):
-            destination = self.PlayingStacks[int(choosenDestination) - 1]
+        if ( choosenDestination >= 0 and choosenDestination <= 6):
+            destination = self.PlayingStacks[choosenDestination]
             if (len(destination) == 0):
                 if (card.value != "K"):
                     # print ("You can only move a king here")
@@ -208,7 +209,7 @@ class Board():
 
     # Help to determine where is a card of the board
     # Returns:
-    # [0-7]: If the card is face up in a tableau pile
+    # [0-6]: If the card is face up in a tableau pile
     # ["H", "S", "C", "D"]: If the card is the last one in a foundation
     # "W": If the card is the last one in the waste
     # 0: otherwise

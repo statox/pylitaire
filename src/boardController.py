@@ -92,7 +92,7 @@ class BoardController:
         for key in buttons.keys():
             command = partial(self.board.moveCardFromTableau, card, (key + 1).__str__())
             buttons[key].configure(command=command)
-            
+
     def defineFoundationButtonActions(self):
         commandH = partial(self.moveCardFromfoundation, "H")
         commandC = partial(self.moveCardFromfoundation, "C")
@@ -109,5 +109,6 @@ class BoardController:
         for index in range (0, 7):
             if len(frames[index].winfo_children()) > 0:
                 child = frames[index].winfo_children()[-1]
-                command = partial(self.board.moveCardFromFoundation, choosenFoundation, (index +1).__str__())
+                card = self.board.PlayingStacks[index][-1]
+                command = partial(self.board.moveCardFromFoundation, choosenFoundation, card)
                 child.configure(command=command)
