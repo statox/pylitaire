@@ -208,13 +208,17 @@ class Board():
         return 0
 
     # Help to determine where is a card of the board
+    # To have a consistent behavior with empty emplacements the function
+    # can also take a string as argument representing the empty place
     # Returns:
     # [0-6]: If the card is face up in a tableau pile
     # ["H", "S", "C", "D"]: If the card is the last one in a foundation
     # "W": If the card is the last one in the waste
-    # 0: otherwise
+    # -1: otherwise
     def getCardPosition(self, card):
         if ( card is not None ):
+            if card in {"W", "H", "S", "C", "D", "0", "1", "2", "3", "4", "5", "6"}:
+                return card
             if ( len(self.waste) and self.waste[-1] == card ):
                 return "W"
             elif ( len(self.H)!=0 and self.H[-1] == card ):
@@ -232,7 +236,7 @@ class Board():
                     for c in pile:
                         if (c == card and not c.facedown):
                             return index
-        return 0
+        return -1
 
     def __str__(self):
         str = "stock: "
