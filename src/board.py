@@ -100,8 +100,8 @@ class Board():
         return 0
 
     def moveCardFromWaste(self, destinationCard):
-        wasteCardValue = self.values.index(self.waste[-1].value)
-        choosenDestination = self.getCardPosition(destinationCard)
+        wasteCardValue      = self.values.index(self.waste[-1].value)
+        choosenDestination  = self.getCardPosition(destinationCard)
 
         # If we try to put the card on the tableau check the color isnt the same
         # and the values are following
@@ -219,7 +219,7 @@ class Board():
     # -1: otherwise
     def getCardPosition(self, card):
         if ( card is not None ):
-            if card in {"W", "H", "S", "C", "D", "0", "1", "2", "3", "4", "5", "6"}:
+            if card.__str__() in {"W", "H", "S", "C", "D", "0", "1", "2", "3", "4", "5", "6"}:
                 return card
             if ( len(self.waste) and self.waste[-1] == card ):
                 return "W"

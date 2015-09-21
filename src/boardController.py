@@ -43,30 +43,33 @@ class BoardController:
         self.board.pickCardFromStock()
 
     def moveCardFromWaste(self):
-        if (len(self.board.H) > 0):
-            self.boardFrame.HButton.configure(command=lambda: self.board.moveCardFromWaste(self.board.H[-1]))
-        else:
-            self.boardFrame.HButton.configure(command=lambda: self.board.moveCardFromWaste("H"))
-        if (len(self.board.C) > 0):
-            self.boardFrame.CButton.configure(command=lambda: self.board.moveCardFromWaste(self.board.C[-1]))
-        else:
-            self.boardFrame.CButton.configure(command=lambda: self.board.moveCardFromWaste("C"))
-        if (len(self.board.S) > 0):
-            self.boardFrame.SButton.configure(command=lambda: self.board.moveCardFromWaste(self.board.S[-1]))
-        else:
-            self.boardFrame.SButton.configure(command=lambda: self.board.moveCardFromWaste("S"))
-        if (len(self.board.D) > 0):
-            self.boardFrame.DButton.configure(command=lambda: self.board.moveCardFromWaste(self.board.D[-1]))
-        else:
-            self.boardFrame.DButton.configure(command=lambda: self.board.moveCardFromWaste("D"))
+        # Define actions pour the foundation buttons
+        argCommandH = self.board.H[-1] if (len(self.board.H) > 0) else "H"
+        argCommandC = self.board.C[-1] if (len(self.board.C) > 0) else "C"
+        argCommandS = self.board.S[-1] if (len(self.board.S) > 0) else "S"
+        argCommandD = self.board.D[-1] if (len(self.board.D) > 0) else "D"
+
+        commandH = partial(self.board.moveCardFromWaste, argCommandH)
+        commandC = partial(self.board.moveCardFromWaste, argCommandC)
+        commandS = partial(self.board.moveCardFromWaste, argCommandS)
+        commandD = partial(self.board.moveCardFromWaste, argCommandD)
+
+        self.boardFrame.HButton.configure(command=commandH)
+        self.boardFrame.CButton.configure(command=commandC)
+        self.boardFrame.SButton.configure(command=commandS)
+        self.boardFrame.DButton.configure(command=commandD)
 
         # Define actions for last cards in each pile of the tableau
         frames = self.boardFrame.tableauFrames
         for index in range (0, 7):
-            if len(frames[index].winfo_children()) > 0:
-                child = frames[index].winfo_children()[-1]
-                card = self.board.PlayingStacks[index][-1]
+            if ( len(frames[index].winfo_children()) > 0 ):
+                if (len(self.board.PlayingStacks[index])>0 ):
+                    card   = self.board.PlayingStacks[index][-1]
+                else:
+                    card   = index
+
                 command = partial(self.board.moveCardFromWaste, card)
+                child  = frames[index].winfo_children()[-1]
                 child.configure(command=command)
 
     def defineTableauButtonActions(self):
