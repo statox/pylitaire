@@ -39,6 +39,7 @@ class Board():
         # Update GUI
         pub.sendMessage('refreshGUITopic')
 
+
     def pickCardFromStock(self):
         # If stock gets empty, recycle the waste
         if (len(self.stock) == 0):
@@ -139,9 +140,11 @@ class Board():
         # Update GUI
         pub.sendMessage('refreshGUITopic')
 
-    def moveCardFromTableau(self, card, choice):
+    def moveCardFromTableau(self, card, destinationCard):
         card.setFaceDown(False)
         cardValue = self.values.index(card.value)
+
+        choosenDestination  = self.getCardPosition(destinationCard)
 
         # Get the list of cards to move (the list can contain only one card)
         pileIndex = -1
@@ -158,8 +161,8 @@ class Board():
             return -1
         
         # Try to move to the tableau
-        if (choice.isdigit() and int(choice) >= 1 and int(choice) <= 7):
-            destination = self.PlayingStacks[int(choice) - 1]
+        if (choosenDestination >= 0 and choosenDestination <= 6):
+            destination = self.PlayingStacks[choosenDestination]
             # Move only king if the pile is empty
             if (len(destination) == 0):
                 if (card.value != "K"):
@@ -174,13 +177,13 @@ class Board():
                 return -1
         # Try to move in to the foundations
         else:
-            if (choice == "H"):
+            if (choosenDestination == "H"):
                 destination = self.H
-            elif (choice == "S"):
+            elif (choosenDestination == "S"):
                 destination = self.S
-            elif (choice == "D"):
+            elif (choosenDestination == "D"):
                 destination = self.D
-            elif (choice == "C"):
+            elif (choosenDestination == "C"):
                 destination = self.C
             else:
                 pub.sendMessage('refreshGUITopic')
@@ -193,7 +196,7 @@ class Board():
                 return -1
             # Checks on the values and colors
             if (cardValue != len(destination) or
-                card.symbol != choice):
+                card.symbol != choosenDestination):
                 # print("Wrong color or wrong value")
                 pub.sendMessage('refreshGUITopic')
                 return -1

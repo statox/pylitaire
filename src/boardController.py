@@ -100,15 +100,19 @@ class BoardController:
                     break
 
             button  = self.boardFrame.cardButtons[key]
-            command = partial(self.board.moveCardFromTableau, card, (pileIndex + 1).__str__())
+            # command = partial(self.board.moveCardFromTableau, card, (pileIndex + 1).__str__())
+            command = partial(self.board.moveCardFromTableau, card, key)
             button.configure(command=command)
 
         # if the tableau contains empty pile, configure the buttons
         # which represent the empty piles
-        buttons = self.boardFrame.tableauFirstCardButtons
-        for key in buttons.keys():
-            command = partial(self.board.moveCardFromTableau, card, (key + 1).__str__())
-            buttons[key].configure(command=command)
+        frames = self.boardFrame.tableauFrames
+        for index in range (0, 7):
+            if ( len(frames[index].winfo_children()) > 0 ):
+                if (len(self.board.PlayingStacks[index])<1 ):
+                    command = partial(self.board.moveCardFromTableau, card, index)
+                    child  = frames[index].winfo_children()[-1]
+                    child.configure(command=command)
 
     def defineFoundationButtonActions(self):
         commandH = partial(self.moveCardFromfoundation, "H")
