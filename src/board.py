@@ -41,20 +41,7 @@ class Board():
 
 
     def pickCardFromStock(self):
-        # If stock gets empty, recycle the waste
-        if (len(self.stock) == 0):
-            while (len(self.waste) > 0):
-                self.stock.append(self.waste.pop())
-                self.stock[-1].setFaceDown(True)
-            self.stock[-1].setFaceDown(False)
-
-        card = self.stock.pop()
-        self.waste.append(card)
-        if (len(self.waste) > 0):
-            self.waste[-1].setFaceDown(False)
-
-        # Update GUI
-        pub.sendMessage('refreshGUITopic')
+        return 0
 
     def moveCardFromFoundation(self, choosenFoundation, destinationCard):
         choosenDestination = self.getCardPosition(destinationCard)
@@ -94,10 +81,6 @@ class Board():
             # print("Incorrect choice of pile")
             return -1
 
-        destination.append(foundation.pop())
-
-        # Update GUI
-        pub.sendMessage('refreshGUITopic')
         return 0
 
     def moveCardFromWaste(self, destinationCard):
@@ -134,11 +117,7 @@ class Board():
                 # print("Wrong color or wrong value")
                 return -1
 
-        # If all conditions are ok move the card
-        destination.append(self.waste.pop())
-
-        # Update GUI
-        pub.sendMessage('refreshGUITopic')
+        return 0
 
     def moveCardFromTableau(self, card, destinationCard):
         card.setFaceDown(False)
@@ -201,15 +180,6 @@ class Board():
                 pub.sendMessage('refreshGUITopic')
                 return -1
 
-        # Actually move the cards
-        for c in range(cardIndex, len(s)):
-            destination.append(s.pop(cardIndex))
-
-        # Reveal the card which was before the moved one(s)
-        if (len(s) > 0):
-            s[-1].setFaceDown(False)
-
-        pub.sendMessage('refreshGUITopic')
         return 0
 
     # Help to determine where is a card of the board
@@ -243,34 +213,117 @@ class Board():
                             return index
         return -1
 
+    # Takes a position returned by self.getCardPosition
+    # returns the corresponding object on the board
+    def getPositionObject(self, position):
+        print("Get position object " + position.__str__())
+        if (position == "H"):
+            print("return H")
+            return self.H
+        elif (position == "S"):
+            print("return S")
+            return self.S
+        elif (position == "D"):
+            print("return D")
+            return self.D
+        elif (position == "C"):
+            print("return C")
+            return self.C
+        elif (position == "W"):
+            print("return W")
+            return self.waste
+        elif (position >= 0 and position <= 6):
+            return self.PlayingStacks[position]
+        else:
+            return self.stock
+
+        return None
+
     # Takes a card to move and a card where to move the first one
     # Depending on the position of the cardOrigin, call the corresponding
     # movement method
     def chooseMovement(*args):
         if (len(args)>0):
             self = args[0]
+
         if (len(args)>1):
-            cardOrigin = args[1]
+            cardOrigin       = args[1]
+            cardDestination  = None
+
         if (len(args)>2):
-            cardDestination = args[2]
+            cardDestination  = args[2]
+
         if (len(args)<=1 or len(args)>3):
             return -1
 
         cardPosition = self.getCardPosition(cardOrigin)
 
+        movePossible = -1
         if (cardPosition in {"H", "S", "C", "D"}):
-            self.moveCardFromFoundation(cardOrigin, cardDestination)
-            return 1
+            movePossible = self.moveCardFromFoundation(cardOrigin, cardDestination)
         elif (cardPosition == "W"):
-            self.moveCardFromWaste(cardDestination)
-            return 1
+            movePossible = self.moveCardFromWaste(cardDestination)
         elif (cardPosition >= 0 and cardPosition <= 6):
-            self.moveCardFromTableau(cardOrigin, cardDestination)
-            return 1
+            movePossible = self.moveCardFromTableau(cardOrigin, cardDestination)
         else:
-            self.pickCardFromStock()
-            return 1
+            movePossible = self.pickCardFromStock()
 
+        if (movePossible == 0):
+            self.moveCard(cardOrigin, cardDestination)
+        return 1
+
+    def moveCard(*args):
+        if (len(args)>0):
+            self = args[0]
+        if (len(args)>1):
+            cardOrigin     = args[1]
+            if (cardOrigin != "stock"):
+                symboleOrigin  = self.getCardPosition(cardOrigin)
+                origin         = self.getPositionObject(symboleOrigin)
+            else:
+                symboleOrigin      = "stock"
+                origin             = self.stock
+                symbolDestination  = "W"
+                destination        = self.waste
+        if (len(args)>2):
+            cardDestination    = args[2]
+            symbolDestination  = self.getCardPosition(cardDestination)
+            destination        = self.getPositionObject(symbolDestination)
+        if (len(args)<=1 or len(args)>3):
+            return -1
+
+        # Card in one the the foundations
+        if (symboleOrigin in [ "H", "S", "C", "D" ]):
+            destination.append(origin.pop())
+        # Card in the waste
+        elif (symboleOrigin == "W"):
+            destination.append(origin.pop())
+        # Card in the tableau
+        elif (symboleOrigin >= 0 and symboleOrigin <= 6):
+            # Get the position of the card in its pile
+            cardIndex = origin.index(cardOrigin)
+            # Move the card (and the ones below)
+            for c in range(cardIndex, len(origin)):
+                destination.append(origin.pop(cardIndex))
+            # Reveal the card which was before the moved one(s)
+            if (len(origin) > 0):
+                origin[-1].setFaceDown(False)
+        # Card in the stock
+        elif (symboleOrigin == "stock"):
+            # If stock gets empty, recycle the waste
+            if (len(self.stock) == 0):
+                while (len(self.waste) > 0):
+                    self.stock.append(self.waste.pop())
+                    self.stock[-1].setFaceDown(True)
+                self.stock[-1].setFaceDown(False)
+
+            card = self.stock.pop()
+            self.waste.append(card)
+            if (len(self.waste) > 0):
+                self.waste[-1].setFaceDown(False)
+
+        pub.sendMessage('refreshGUITopic')
+        return 1
     def __str__(self):
         str = "stock: "
         card = "  "
