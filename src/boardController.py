@@ -37,6 +37,7 @@ class BoardController:
     def listenerClick(self, cardClicked):
         # If the stock card is clicked don't wait from a second card
         if (cardClicked == "stock"):
+            self.clickCount = 0
             self.board.chooseMovement(cardClicked)
             return 0
 
