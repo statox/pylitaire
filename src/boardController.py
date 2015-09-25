@@ -35,6 +35,12 @@ class BoardController:
     # Listen for cards which are clicked and either keep the card in memory
     # or call the board method to choose what to do
     def listenerClick(self, cardClicked):
+        # If the stock card is clicked don't wait from a second card
+        if (cardClicked == "stock"):
+            print("Stock card selected")
+            self.board.chooseMovement(cardClicked)
+            return 0
+
         self.clickCount += 1
         if (self.clickCount == 1):
             self.prevClickedCard = cardClicked
