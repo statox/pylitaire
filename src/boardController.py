@@ -129,7 +129,11 @@ class BoardController:
         frames = self.boardFrame.tableauFrames
         for index in range (0, 7):
             if len(frames[index].winfo_children()) > 0:
-                child = frames[index].winfo_children()[-1]
-                card = self.board.PlayingStacks[index][-1]
+                if (len(self.board.PlayingStacks[index])>0 ):
+                    card   = self.board.PlayingStacks[index][-1]
+                else:
+                    card   = index
+
                 command = partial(self.board.moveCardFromFoundation, choosenFoundation, card)
+                child = frames[index].winfo_children()[-1]
                 child.configure(command=command)
