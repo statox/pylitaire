@@ -1,8 +1,9 @@
-from functools import partial
-from boardFrame import BoardFrame
-from board import Board
-from Tkinter import *
-from pubsub import pub
+from functools   import partial
+from boardFrame  import BoardFrame
+from board       import Board
+from Tkinter     import *
+from pubsub      import pub
+from ai          import AI
 
 class BoardController:
     def __init__(self):
