@@ -16,8 +16,6 @@ class BoardController:
         self.boardFrame.pack(side=TOP, fill=BOTH, expand=True)
         self.ai = AI()
 
-        self.refreshGui()
-
         # Define commands linked to the view buttons
         self.defineCardsActions()
         # Subscribes to event from the board to know when to refresh the GUI 
@@ -26,6 +24,9 @@ class BoardController:
         pub.subscribe(self.listenerClick, 'cardClicked')
         self.clickCount = 0
         self.prevClickedCard = None
+
+        # Show board for the first time
+        pub.sendMessage('refreshGUITopic')
 
     # Listener for GUI refresh
     # When the GUI is refreshed we also need to re-bind the cards buttons
