@@ -14,6 +14,7 @@ class BoardController:
         self.boardFrame = BoardFrame(self.root)
         self.board = Board()
         self.boardFrame.pack(side=TOP, fill=BOTH, expand=True)
+        self.ai = AI()
 
         self.refreshGui()
 
@@ -32,6 +33,7 @@ class BoardController:
     def listenerGui(self):
         self.refreshGui()
         self.defineCardsActions()
+        self.ai.willWin(self.board)
 
     # Listen for cards which are clicked and either keep the card in memory
     # or call the board method to choose what to do
