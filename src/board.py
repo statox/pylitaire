@@ -243,6 +243,43 @@ class Board():
                             return index
         return -1
 
+    # Takes a card to move and a card where to move the first one
+    # Depending on the position of the cardOrigin, call the corresponding
+    # movement method
+    def chooseMovement(*args):
+        print("args len: " + len(args).__str__() + "  args: " + args.__str__())
+        if (len(args)>0):
+            self = args[0]
+        if (len(args)>1):
+            cardOrigin = args[1]
+        if (len(args)>2):
+            cardDestination = args[2]
+        if (len(args)<=1 or len(args)>3):
+            print("Invalid number of argsuments")
+            return -1
+
+        print("choos movement: " + cardOrigin.__str__() +
+                " =>  " + cardDestination.__str__())
+
+        cardPosition = self.getCardPosition(cardOrigin)
+
+        if (cardPosition in {"H", "S", "C", "D"}):
+            print("Move from foundations")
+            self.moveCardFromFoundation(cardOrigin, cardDestination)
+            return 1
+        elif (cardPosition == "W"):
+            print("Move from waste")
+            self.moveCardFromWaste(cardDestination)
+            return 1
+        elif (cardPosition >= 0 and cardPosition <= 6):
+            print("Move from tableau")
+            self.moveCardFromTableau(cardOrigin, cardDestination)
+            return 1
+        else:
+            print("pick from stock")
+            self.pickCardFromStock()
+            return 1
+
     def __str__(self):
         str = "stock: "
         card = "  "
