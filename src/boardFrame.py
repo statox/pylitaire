@@ -97,15 +97,23 @@ class BoardFrame(Frame):
     # To be called by the controller giving as argument
     # a list of possible move
     def showPossibleMoves(self, possibleMoves):
+        # if no move is possible focus stock button 
+        if (not possibleMoves):
+            self.focusButton(self.stockButton, True)
+            sleep(1)
+            self.unfocusButton(self.stockButton)
+            return 0
+
         for origin in possibleMoves.keys():
             self.focusButton(origin, True)
             for destination in possibleMoves[origin]:
                 self.focusButton(destination, False)
 
-            sleep(0.5)
+            sleep(1)
             self.unfocusButton(origin)
             for destination in possibleMoves[origin]:
                 self.unfocusButton(destination)
+            sleep(0.5)
 
         return 0
 
