@@ -71,7 +71,7 @@ class AI():
                 if (len(pile) > 0):
                     destinationCard = pile[-1]
                     if (board.moveCardFromFoundation("C", destinationCard) == 0):
-                        moves.append([ board.C[-1], destinationSard ])
+                        moves.append([ board.C[-1], destinationCard ])
 
         if (len(board.D) > 0):
             # Move to the tableau
