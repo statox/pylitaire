@@ -18,6 +18,7 @@ class BoardController:
 
         # Define commands linked to the view buttons
         self.defineCardsActions()
+        self.boardFrame.possibleMovesButton.configure(command=self.showPossibleMoves)
         # Subscribes to event from the board to know when to refresh the GUI 
         pub.subscribe(self.listenerGui, 'refreshGUITopic')
         # Subscribes to event when a card is clicked
@@ -34,7 +35,9 @@ class BoardController:
     def listenerGui(self):
         self.refreshGui()
         self.defineCardsActions()
-        self.ai.willWin(self.board)
+        if (self.ai.willWin(self.board)):
+            print("PLayer will win")
+
 
     # Listen for cards which are clicked and either keep the card in memory
     # or call the board method to choose what to do
@@ -59,6 +62,46 @@ class BoardController:
 
     def refreshGui(self):
         self.boardFrame.updateGUI(self.board)
+
+    def showPossibleMoves(self):
+        possibleMoves = self.ai.possibleMoves(self.board)
+        print("possible moves:")
+        movesButtons = {}
+        for origin, destination in possibleMoves:
+            print(origin.__str__() + " => " + destination.__str__())
+            # Get button corresponding to card orgin
+            if (origin == "H"):
+                buttonOrigin = self.boardFrame.HButton
+            elif (origin == "S"):
+                buttonOrigin = self.boardFrame.SButton
+            elif (origin == "C"):
+                buttonOrigin = self.boardFrame.CButton
+            elif (origin == "D"):
+                buttonOrigin = self.boardFrame.DButton
+            elif (len(self.board.waste)>0 and origin == self.board.waste[-1]):
+                print("waste condition")
+                buttonOrigin = self.boardFrame.wasteButton
+            else:
+                buttonOrigin = self.boardFrame.cardButtons[origin]
+
+            # Get button corresponding to card destination
+            if (destination == "H"):
+                buttonDestination = self.boardFrame.HButton
+            elif (destination == "S"):
+                buttonDestination = self.boardFrame.SButton
+            elif (destination == "C"):
+                buttonDestination = self.boardFrame.CButton
+            elif (destination == "D"):
+                buttonDestination = self.boardFrame.DButton
+            else:
+                buttonDestination = self.boardFrame.cardButtons[destination]
+
+            if not buttonOrigin in movesButtons:
+                movesButtons[buttonOrigin] = []
+
+            movesButtons[buttonOrigin].append(buttonDestination)
+
+        self.boardFrame.showPossibleMoves(movesButtons)
 
     def defineCardsActions(self):
         # This dictionnary contains the cards and the command to bound

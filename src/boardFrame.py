@@ -1,5 +1,6 @@
 from PIL import Image, ImageTk
 from Tkinter import Frame, Button
+from time import sleep
 
 class BoardFrame(Frame):
     def __init__(self, master):
@@ -67,6 +68,11 @@ class BoardFrame(Frame):
         self.photoSEmpty       = ImageTk.PhotoImage(Image.open("../img/Sempty.bmp"))
         self.photoDEmpty       = ImageTk.PhotoImage(Image.open("../img/Dempty.bmp"))
 
+        # Put possible moves button
+        self.possibleMovesButton = Button(self.possibleMovesFrame)
+        self.possibleMovesButton.text = "Show possible moves"
+        self.possibleMovesButton.pack(side="top", fill="both", expand=False)
+
         # Put initial waste button
         self.wasteButton = Button(self.wasteFrame, image=self.photoEmpty)
         self.wasteButton.photo = self.photoEmpty
@@ -87,6 +93,35 @@ class BoardFrame(Frame):
         self.SButton.pack(side="top", fill="both", expand=False)
         self.DButton.pack(side="top", fill="both", expand=False)
 
+
+    # To be called by the controller giving as argument
+    # a list of possible move
+    def showPossibleMoves(self, possibleMoves):
+        for origin in possibleMoves.keys():
+            self.focusButton(origin, True)
+            for destination in possibleMoves[origin]:
+                self.focusButton(destination, False)
+
+            sleep(0.5)
+            self.unfocusButton(origin)
+            for destination in possibleMoves[origin]:
+                self.unfocusButton(destination)
+
+        return 0
+
+
+    # change the background of a button to focus on it
+    def focusButton(self, button, isOrigin):
+        color="red"
+        if (isOrigin):
+            color = "green"
+        button.configure(highlightbackground=color)
+        button.update_idletasks()
+
+    # change the background of a button to unfocus on it
+    def unfocusButton(self, button):
+        button.configure(highlightbackground="white")
+        button.update_idletasks()
 
 
     # To be called by the controller when the board 
