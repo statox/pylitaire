@@ -65,21 +65,18 @@ class BoardController:
 
     def showPossibleMoves(self):
         possibleMoves = self.ai.possibleMoves(self.board)
-        print("possible moves:")
         movesButtons = {}
         for origin, destination in possibleMoves:
-            print(origin.__str__() + " => " + destination.__str__())
             # Get button corresponding to card orgin
-            if (origin == "H"):
+            if (len(self.board.H)>0 and origin == self.board.H[-1]):
                 buttonOrigin = self.boardFrame.HButton
-            elif (origin == "S"):
+            elif (len(self.board.S)>0 and origin == self.board.S[-1]):
                 buttonOrigin = self.boardFrame.SButton
-            elif (origin == "C"):
+            elif (len(self.board.C)>0 and origin == self.board.C[-1]):
                 buttonOrigin = self.boardFrame.CButton
-            elif (origin == "D"):
+            elif (len(self.board.D)>0 and origin == self.board.D[-1]):
                 buttonOrigin = self.boardFrame.DButton
             elif (len(self.board.waste)>0 and origin == self.board.waste[-1]):
-                print("waste condition")
                 buttonOrigin = self.boardFrame.wasteButton
             else:
                 buttonOrigin = self.boardFrame.cardButtons[origin]
