@@ -7,28 +7,37 @@ class BoardFrame(Frame):
         self.configure(background="#336600")
 
         # Divide screen in horizontal zones
-        self.topFrame     = Frame(self)
-        self.bottomFrame  = Frame(self)
-        self.topFrame.pack(side="top", fill="x", expand=False)
-        self.bottomFrame.pack(side="top", fill="both", expand=True)
+        self.infoFrame      = Frame(self)   # contains helper buttons and timer
+        self.topCardsFrame  = Frame(self)   # contains stock, waste and foundations
+        self.tableauFrame   = Frame(self)   # contains tableau piles
+        self.infoFrame.pack(side="top", fill="x", expand=False)
+        self.topCardsFrame.pack(side="top", fill="x", expand=False)
+        self.tableauFrame.pack(side="top", fill="both", expand=True)
 
-        # Divide the top frame in 2 vertically
-        self.topLeft   = Frame(self.topFrame)
-        self.topRight  = Frame(self.topFrame)
-        self.topLeft.pack(side="left", fill="x", expand=True)
-        self.topRight.pack(side="right", fill="x", expand=True)
+
+        # Divide the info frame in 2 vertically
+        self.possibleMovesFrame  = Frame(self.infoFrame)
+        self.timerFrame          = Frame(self.infoFrame)
+        self.possibleMovesFrame.pack(side="left", fill="x", expand=True)
+        self.timerFrame.pack(side="right", fill="x", expand=True)
+
+        # Divide the top cards frame in 2 vertically
+        self.topCardsLeft   = Frame(self.topCardsFrame)
+        self.topCardsRight  = Frame(self.topCardsFrame)
+        self.topCardsLeft.pack(side="left", fill="x", expand=True)
+        self.topCardsRight.pack(side="right", fill="x", expand=True)
 
         # In top left put 2 frames for the stock and the waste
-        self.stockFrame = Frame(self.topLeft)
-        self.wasteFrame = Frame(self.topLeft)
+        self.stockFrame = Frame(self.topCardsLeft)
+        self.wasteFrame = Frame(self.topCardsLeft)
         self.stockFrame.pack(side="left", fill="x", expand=True)
         self.wasteFrame.pack(side="right", fill="x", expand=True)
 
         # In top right put 4 frames for the 4 foundations
-        self.HFrame = Frame(self.topRight)
-        self.CFrame = Frame(self.topRight)
-        self.SFrame = Frame(self.topRight)
-        self.DFrame = Frame(self.topRight)
+        self.HFrame = Frame(self.topCardsRight)
+        self.CFrame = Frame(self.topCardsRight)
+        self.SFrame = Frame(self.topCardsRight)
+        self.DFrame = Frame(self.topCardsRight)
         self.HFrame.pack(side="right", fill="both", expand=True)
         self.CFrame.pack(side="right", fill="both", expand=True)
         self.DFrame.pack(side="right", fill="both", expand=True)
@@ -37,7 +46,7 @@ class BoardFrame(Frame):
         # In bottom frame put 7 frames for the tableau piles
         self.tableauFrames = []
         for i in range(0, 7):
-            self.tableauFrames.append(Frame(self.bottomFrame))
+            self.tableauFrames.append(Frame(self.tableauFrame))
             self.tableauFrames[i].pack(side="left", fill="y", expand=True)
 
         # Dictionary which will links cards in the tableau
