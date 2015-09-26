@@ -69,7 +69,7 @@ class AI():
             # Move to the tableau
             for pile in board.PlayingStacks:
                 if (len(pile) > 0):
-                    destinationSard = pile[-1]
+                    destinationCard = pile[-1]
                     if (board.moveCardFromFoundation("C", destinationCard) == 0):
                         moves.append([ board.C[-1], destinationSard ])
 
