@@ -210,21 +210,15 @@ class Board():
     # Takes a position returned by self.getCardPosition
     # returns the corresponding object on the board
     def getPositionObject(self, position):
-        print("Get position object " + position.__str__())
         if (position == "H"):
-            print("return H")
             return self.H
         elif (position == "S"):
-            print("return S")
             return self.S
         elif (position == "D"):
-            print("return D")
             return self.D
         elif (position == "C"):
-            print("return C")
             return self.C
         elif (position == "W"):
-            print("return W")
             return self.waste
         elif (position >= 0 and position <= 6):
             return self.PlayingStacks[position]
