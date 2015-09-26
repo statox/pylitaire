@@ -48,38 +48,41 @@ class AI():
             if (board.moveCardFromWaste("D") == 0):
                 moves.append([board.waste[-1], "D"])
 
+        # If not move is possible from the waste or from the tableau
+        # search for moves from the foundattions
         # Test card from the foundations
-        if (len(board.H) > 0):
-            # Move to the tableau
-            for pile in board.PlayingStacks:
-                if (len(pile) > 0):
-                    destinationCard = pile[-1]
-                    if (board.moveCardFromFoundation("H", destinationCard) == 0):
-                        moves.append([ board.H[-1], destinationCard ])
+        if (not moves):
+            if (len(board.H) > 0):
+                # Move to the tableau
+                for pile in board.PlayingStacks:
+                    if (len(pile) > 0):
+                        destinationCard = pile[-1]
+                        if (board.moveCardFromFoundation("H", destinationCard) == 0):
+                            moves.append([ board.H[-1], destinationCard ])
 
-        if (len(board.S) > 0):
-            # Move to the tableau
-            for pile in board.PlayingStacks:
-                if (len(pile) > 0):
-                    destinationCard = pile[-1]
-                    if (board.moveCardFromFoundation("S", destinationCard) == 0):
-                        moves.append([ board.S[-1], destinationCard ])
+            if (len(board.S) > 0):
+                # Move to the tableau
+                for pile in board.PlayingStacks:
+                    if (len(pile) > 0):
+                        destinationCard = pile[-1]
+                        if (board.moveCardFromFoundation("S", destinationCard) == 0):
+                            moves.append([ board.S[-1], destinationCard ])
 
-        if (len(board.C) > 0):
-            # Move to the tableau
-            for pile in board.PlayingStacks:
-                if (len(pile) > 0):
-                    destinationCard = pile[-1]
-                    if (board.moveCardFromFoundation("C", destinationCard) == 0):
-                        moves.append([ board.C[-1], destinationCard ])
+            if (len(board.C) > 0):
+                # Move to the tableau
+                for pile in board.PlayingStacks:
+                    if (len(pile) > 0):
+                        destinationCard = pile[-1]
+                        if (board.moveCardFromFoundation("C", destinationCard) == 0):
+                            moves.append([ board.C[-1], destinationCard ])
 
-        if (len(board.D) > 0):
-            # Move to the tableau
-            for pile in board.PlayingStacks:
-                if (len(pile) > 0):
-                    destinationCard = pile[-1]
-                    if (board.moveCardFromFoundation("D", destinationCard) == 0):
-                        moves.append([ board.D[-1], destinationCard ])
+            if (len(board.D) > 0):
+                # Move to the tableau
+                for pile in board.PlayingStacks:
+                    if (len(pile) > 0):
+                        destinationCard = pile[-1]
+                        if (board.moveCardFromFoundation("D", destinationCard) == 0):
+                            moves.append([ board.D[-1], destinationCard ])
 
 
 
